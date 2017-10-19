@@ -1,0 +1,11 @@
+[include]
+
+[ignore]
+.*/node_modules/.*
+<PROJECT_ROOT>/node_modules/[^r].*
+[libs]
+./node_modules/fbjs/flow/lib
+[options]
+esproposal.class_static_fields=enable
+module.name_mapper='\(react-redux\)' -> '<PROJECT_ROOT>/.flowStub.js.flow'
+module.name_mapper='\(prop-types\)' -> '<PROJECT_ROOT>/.flowStub.js.flow'

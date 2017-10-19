@@ -1,2 +1,3 @@
-# react-awesome-example
-An example project for react-awesome-generator
+TODO :
+- React-Router
+- I18next
