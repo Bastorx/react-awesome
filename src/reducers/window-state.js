@@ -1,4 +1,4 @@
-import { REHYDRATE } from "redux-persist/constants";
+import { REHYDRATE } from "redux-persist";
 import { WINDOW_RESIZE } from "../actions/action-types";
 
 const win = typeof window === "undefined" ? null : window;
@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
       };
 
     case REHYDRATE:
-      if (action.payload.windowState) {
+      if (action.payload && action.payload.windowState) {
         return {
           ...initialState,
           ...action.payload.windowState

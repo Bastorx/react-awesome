@@ -17,28 +17,27 @@ import bundles from "../translations";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Screen from "./Screen";
-import NotFound from "./NotFound";
-
 // Load i18next
 const loadI18n = new Promise(resolve => {
-  i18n.use(i18nextBrowserLanguageDetector).init({
-    ns: ["global"],
-    defaultNS: "global",
-    fallbackLng: "en",
-    resStore: {},
-    lngWhitelist: ["en", "fr"],
-    supportedLngs: {
-      en: ["global"],
-      fr: ["global"]
+  i18n.use(i18nextBrowserLanguageDetector).init(
+    {
+      ns: ["global"],
+      defaultNS: "global",
+      fallbackLng: "en",
+      resStore: {},
+      lngWhitelist: ["en", "fr"],
+      supportedLngs: {
+        en: ["global"],
+        fr: ["global"]
+      }
+    },
+    err => {
+      if (err) {
+        console.error(err);
+      }
+      return resolve();
     }
-  },
-  err => {
-    if (err) {
-      console.error(err);
-    }
-    return resolve();
-  });
+  );
 });
 Object.keys(bundles).forEach(bundleName => {
   Object.keys(bundles[bundleName]).forEach(locale => {
@@ -53,7 +52,9 @@ const composed =
     : compose(applyMiddleware(thunk, promiseMiddleware()));
 
 const store = createStore(combinedReducers, composed);
-persistStore(store, { whitelist: ["windowState"] }, () => {});
+const persistor = persistStore(store, null, () => {
+  store.getState();
+});
 
 // Store screen size
 window.addEventListener("resize", () => {
@@ -69,8 +70,10 @@ const App = () => (
     <I18nextProvider i18n={i18n}>
       <Router>
         <Switch>
-          <Route path="/(dog|cat|)" component={Screen} />
-          <Route component={NotFound} />
+          <Route
+            path="/"
+            render={() => <h1>{i18n.t("global:hello-world")}</h1>}
+          />
         </Switch>
       </Router>
     </I18nextProvider>
